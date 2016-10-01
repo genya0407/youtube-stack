@@ -1,6 +1,6 @@
 class ChannelsController < ApplicationController
   before_action :authenticate_user!, :set_user
-  before_action :set_channel, only: [:destroy, :update, :play]
+  before_action :set_channel, only: [:destroy, :update, :play, :go_next]
 
   def index
     render json: @user.channels
@@ -37,6 +37,10 @@ class ChannelsController < ApplicationController
     else
       render json: @channel.errors, status: :unprocessable_entity
     end
+  end
+  
+  def go_next
+    render json: @channel.go_next
   end
 
   private

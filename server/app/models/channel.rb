@@ -6,6 +6,14 @@ class Channel < ApplicationRecord
 
   validate :player_belongs_to_channel
 
+  def go_next
+    videos.playing.first&.played!
+    next_video = videos.queued.first
+    next_video&.playing!
+    
+    return next_video
+  end
+
   private
   def player_belongs_to_channel
     if player_id.present? && !users.exists?(id: player_id)
