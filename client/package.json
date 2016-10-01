@@ -11,7 +11,7 @@
   "main": "./build",
   "scripts": {
     "lint": "./node_modules/.bin/eslint eslint 'src/**/*.@(js|jsx)'",
-    "start": "webpack-dev-server --display-error-details --inline --progress --colors --port 8080",
+    "start": "webpack-dev-server --display-error-details --inline --progress --colors --port 8000",
     "clean": "rimraf ./dist ./build",
     "build": "rimraf ./dist && webpack",
     "deploy": "rimraf ./build && NODE_ENV=production webpack -p --config webpack.prd.config.js"
