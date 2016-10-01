@@ -35,6 +35,9 @@ module Server
         controller_specs: false,
         request_specs: true
       g.fixture_replacement :factory_girl, dir: "spec/factories"
+      g.assets false
+      g.helper false
+      g.template_engine false
     end
 
     config.middleware.use Rack::Cors do

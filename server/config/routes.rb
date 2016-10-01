@@ -1,4 +1,11 @@
 Rails.application.routes.draw do
   mount_devise_token_auth_for 'User', at: 'auth'
-  # For details on the DSL available within this file, see http://guides.rubyonrails.org/routing.html
+  
+  resources :channels, except: [:show] do
+    member { put :play }
+    resources :videos, except: [:show, :index] do
+      collection { get :playing }
+      collection { get :queued }
+    end
+  end
 end

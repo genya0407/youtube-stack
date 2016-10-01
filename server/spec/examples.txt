@@ -1,0 +1,5 @@
+example_id                                 | status | run_time        |
+------------------------------------------ | ------ | --------------- |
+./spec/requests/append_videos_spec.rb[1:1] | passed | 0.39428 seconds |
+./spec/requests/append_videos_spec.rb[1:2] | passed | 0.38089 seconds |
+./spec/requests/append_videos_spec.rb[1:3] | passed | 1.74 seconds    |
