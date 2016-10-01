@@ -21,7 +21,8 @@
     "url": "git+https://github.com/fondadam2016/reactjs-init"
   },
   "dependencies": {
-    "es6-request": "^2.1.2",
+    "axios": "^0.14.0",
+    "material-ui": "^0.15.4",
     "react": "^15.0.2",
     "react-youtube": "^7.2.0",
     "request": "^2.75.0"
