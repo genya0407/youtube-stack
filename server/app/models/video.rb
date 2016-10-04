@@ -2,6 +2,7 @@ class Video < ApplicationRecord
   belongs_to :channel
 
   validate :playing_should_unique, if: :playing?
+  validates :video_id, presence: true
 
   enum status: { queued: 0, playing: 5, played: 10 }
 
