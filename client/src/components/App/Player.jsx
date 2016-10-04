@@ -1,8 +1,11 @@
 import React, { Component } from 'react';
 import YouTube from 'react-youtube';
+import YoutubeAutocomplete from 'material-ui-youtube-autocomplete';
+import Avatar from 'material-ui/Avatar';
 import Paper from 'material-ui/Paper';
 import {List, ListItem} from 'material-ui/List';
 import RaisedButton from 'material-ui/RaisedButton';
+import {apiKey} from '../../config/secrets.js';
 
 export default class Player extends Component {
     componentDidMount() {
@@ -11,35 +14,44 @@ export default class Player extends Component {
             playing_video: null,
             queue: [],
             player: null,
+            search_results: [],
         })
-        this.fetchQueue(this.props.channel);
-        this.fetchPlayingVideo(this.props.channel);
+        this.fetchQueue(this.props.channel.id);
+        this.fetchPlayingVideo(this.props.channel.id);
     }
 
     componentWillUpdate() {
     }
 
-    fetchQueue(channel=null) {
-        if (channel === null){
-            channel = this.state.channel.id
+    fetchQueue(channel_id=null) {
+        if (channel_id === null) {
+            channel_id = this.state.channel.id;
         }
-        this.props.request.get(`/channels/${channel.id}/videos/queued`)
+        this.props.request.get(`/channels/${channel_id}/videos/queued`)
                           .then((response) => {
                                this.setState({ queue: response.data });
                           });
     }
 
-    fetchPlayingVideo(channel=null) {
-        if (channel === null){
-            channel = this.state.channel.id
+    fetchPlayingVideo(channel_id=null) {
+        if (channel_id === null) {
+            channel_id = this.state.channel.id;
         }
-        this.props.request.get(`/channels/${channel.id}/videos/playing`)
+        this.props.request.get(`/channels/${channel_id}/videos/playing`)
                           .then((response) => {
                                this.setState({ playing_video: response.data });
                                if (this.state.playing_video === null) {
                                    this.goNextVideo();
                                }
                           })
+    }
+
+    addVideo(videoId) {
+        const channel_id = this.state.channel.id;
+        this.props.request.post(`/channels/${channel_id}/videos/`, { video: { video_id: videoId } })
+                          .then((response) => {
+                              this.fetchQueue();
+                          });
     }
 
     goNextVideo() {
@@ -78,6 +90,8 @@ export default class Player extends Component {
     render() {
         let youtubeContent = null;
         let queueContent = null;
+        let searchContent = null;
+
         if (this.state !== null) {
             youtubeContent = (
                 <div>
@@ -94,10 +108,33 @@ export default class Player extends Component {
                 </div>
             );
 
+            searchContent = (
+                <div>
+                    <YoutubeAutocomplete
+                        apiKey={apiKey}
+                        maxResults={50}
+                        placeHolder='Append Video'
+                        callback={(videos) => { console.log(videos); this.setState({search_results: videos}) }}
+                    />
+                    {
+                        this.state.search_results.map((video)=>{
+                            return (
+                                <Paper>
+                                    <Avatar src={video.snippet.thumbnails.default.url} />
+                                    {video.snippet.title}<br />
+                                    <RaisedButton label='Add' onClick={this.addVideo.bind(this, video.id.videoId)} />
+                                </Paper>
+                            );
+                        })
+                    }
+                </div>
+            );
+
             queueContent = (
                 <List>
                     {
                         this.state.queue.map((video) => {
+                            console.log(video);
                             return (
                                 <ListItem primaryText={video.video_id} />
                             );
@@ -111,6 +148,7 @@ export default class Player extends Component {
             <Paper>
                 {youtubeContent}
                 {queueContent}
+                {searchContent}
             </Paper>
         );
     }

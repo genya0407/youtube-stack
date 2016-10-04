@@ -23,8 +23,10 @@
   "dependencies": {
     "axios": "^0.14.0",
     "material-ui": "^0.15.4",
+    "material-ui-youtube-autocomplete": "^1.2.1",
     "react": "^15.0.2",
     "react-youtube": "^7.2.0",
+    "react-youtube-autocomplete": "^1.0.15",
     "request": "^2.75.0"
   },
   "license": "MIT",
