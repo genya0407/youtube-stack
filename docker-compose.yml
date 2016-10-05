@@ -7,6 +7,12 @@ services:
             - database:/var/db
         ports:
             - '8080:8080'
+    node:
+        image: nginx:stable-alpine
+        volumes:
+            - ./client/dist:/usr/share/nginx/html
+        ports:
+            - '8000:80'
 volumes:
     database:
         driver: local
