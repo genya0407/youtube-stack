@@ -46,9 +46,9 @@ export default class Player extends Component {
                           })
     }
 
-    addVideo(videoId) {
+    addVideo(video_id, title, thumbnail_url) {
         const channel_id = this.state.channel.id;
-        this.props.request.post(`/channels/${channel_id}/videos/`, { video: { video_id: videoId } })
+        this.props.request.post(`/channels/${channel_id}/videos/`, { video: { video_id, title, thumbnail_url } })
                           .then((response) => {
                               this.fetchQueue();
                           });
@@ -122,7 +122,7 @@ export default class Player extends Component {
                                 <Paper>
                                     <Avatar src={video.snippet.thumbnails.default.url} />
                                     {video.snippet.title}<br />
-                                    <RaisedButton label='Add' onClick={this.addVideo.bind(this, video.id.videoId)} />
+                                    <RaisedButton label='Add' onClick={this.addVideo.bind(this, video.id.videoId, video.snippet.title, video.snippet.thumbnails.default.url)} />
                                 </Paper>
                             );
                         })
@@ -131,16 +131,24 @@ export default class Player extends Component {
             );
 
             queueContent = (
-                <List>
+                <div>
                     {
                         this.state.queue.map((video) => {
-                            console.log(video);
                             return (
-                                <ListItem primaryText={video.video_id} />
+                                <Paper>
+                                    <Avatar src={video.thumbnail_url} />
+                                    {video.title}<br />
+                                    { this.state.playing_video === null && 
+                                        <RaisedButton
+                                            label='Play'
+                                            onClick={this.addVideo.bind(this, video.id, { state: 'playing' })}
+                                        />
+                                     }
+                                </Paper>
                             );
                         })
                     }
-                </List>
+                </div>
             );
         }
 

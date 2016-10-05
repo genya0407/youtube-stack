@@ -3,6 +3,8 @@ class Video < ApplicationRecord
 
   validate :playing_should_unique, if: :playing?
   validates :video_id, presence: true
+  validates :title, presence: true
+  validates :thumbnail_url, presence: true
 
   enum status: { queued: 0, playing: 5, played: 10 }
 

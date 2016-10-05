@@ -4,7 +4,7 @@ class VideosController < ApplicationController
   before_action :set_video, only: [:destroy, :update]
 
   def create
-    video = @channel.videos.build(params.require(:video).permit(:video_id))
+    video = @channel.videos.build(create_params)
     if video.save
       render json: video, status: :created
     else
@@ -50,6 +50,11 @@ class VideosController < ApplicationController
     if @video.nil?
       render json: { error: 'no such video.' }, status: :not_found
     end
+  end
+
+  def create_params
+      params.require(:video)
+            .permit(:video_id, :title, :thumbnail_url)
   end
 
   def update_params
