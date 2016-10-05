@@ -57,7 +57,8 @@ export default class Player extends Component {
     goNextVideo() {
         this.props.request.put(`/channels/${this.state.channel.id}/go_next`)
                           .then((response) => {
-                               this.setState({ playing_video: response.data })
+                              this.fetchPlayingVideo();
+                              this.fetchQueue();
                           });
     }
 
