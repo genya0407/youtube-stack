@@ -79,6 +79,13 @@ export default class Player extends Component {
         }
     }
 
+    updateVideo(id, params) {
+        this.props.put(`/channels/${this.state.channel.id}/videos/${id}`, { video: params })
+                  .then((response) => {
+                      this.fetchPlayingVideo();
+                  });
+    }
+
     finishVideo() {
         const url = `/channels/${this.state.channel.id}/videos`;
         this.props.request.put(`${url}/${this.state.playing_video.id}`, { video: { state: 'played' } })
