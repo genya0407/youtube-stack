@@ -24,6 +24,7 @@ export default class Login extends Component {
                     onChange={(evt, value) => { this.setState({ password: value }); }}
                 />
                 <RaisedButton label='Sign In' onClick={() => { this.props.handleSignIn(this.state.email, this.state.password); }} />
+                <RaisedButton label='Sign Up' onClick={() => { this.props.handleSignUp(this.state.email, this.state.password); }} />
             </Paper>
         );
     }

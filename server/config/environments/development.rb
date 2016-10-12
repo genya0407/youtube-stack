@@ -37,6 +37,13 @@ Rails.application.configure do
   # Raise an error on page load if there are pending migrations.
   config.active_record.migration_error = :page_load
 
+  config.action_mailer.smtp_settings = {
+    port: 587,
+    authentication: 'plain',
+    enable_starttls_auto: true
+  }.merge(
+    [:address, :domain, :user_name, :password].map { |key| [key, Rails.application.secrets.send(key)] } .to_h
+  )
 
   # Raises error for missing translations
   # config.action_view.raise_on_missing_translations = true

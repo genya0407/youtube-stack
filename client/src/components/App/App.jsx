@@ -10,6 +10,7 @@ import Channels from './Channels'
 
 const apiBaseUrl = 'http://localhost:8080';
 const signInUrl = '/auth/sign_in';
+const signUpUrl = '/auth';
 const request = axios.create({ baseURL: apiBaseUrl });
 
 export default class App extends Component {
@@ -31,12 +32,26 @@ export default class App extends Component {
                })
     }
 
+    handleSignUp(email, password) {
+        request.post(signUpUrl, {
+            email, password, password_confirmation: password,
+            confirm_success_url: `http://${window.location.host}/`,
+        }).then((response) => {
+               console.log(response.data);
+        });
+    }
+
     render() {
         
         let content = null;
         if (this.state !== null) {
             if (this.state.user === null) { 
-                content = (<Login handleSignIn={this.handleSignIn.bind(this)} />);
+                content = (
+                    <Login
+                        handleSignIn={this.handleSignIn.bind(this)}
+                        handleSignUp={this.handleSignUp.bind(this)}
+                    />
+                );
             } else {
                 content = (<Channels request={request} user={this.state.user}/>)
             }
