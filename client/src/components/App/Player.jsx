@@ -113,6 +113,7 @@ export default class Player extends Component {
                     {this.amIPlayer() === false &&
                         <RaisedButton label='become player' onClick={this.becomePlayer.bind(this)} />
                     }
+                    <RaisedButton label='go next' onClick={this.goNextVideo.bind(this)} />
                 </div>
             );
 
