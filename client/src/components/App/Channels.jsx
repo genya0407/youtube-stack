@@ -6,12 +6,14 @@ import TextField from 'material-ui/TextField';
 import RaisedButton from 'material-ui/RaisedButton';
 
 const channelsUrl = '/channels'
+const inviteUrl = '/channels/:channel_id/invite'
 
 export default class Queue extends Component {
     componentDidMount () {
         this.setState({
             target_channel: null,
             new_channel_name: '',
+            email: '',
             channels: [],
         });
         this.handleFetchChannels();
@@ -29,6 +31,13 @@ export default class Queue extends Component {
                   .then((response)=> {
                      this.setState({ new_channel_name: '' });
                      this.handleFetchChannels();
+                  });
+    }
+
+    handleAddMember(email) {
+        this.props.request.post(inviteUrl.replace(':channel_id', this.state.target_channel.id), { email })
+                  .then((response)=> {
+                      this.setState({ email: '' });
                   });
     }
 
@@ -61,11 +70,21 @@ export default class Queue extends Component {
                 );
             } else {
                 content = (
-                    <Player
-                        channel={this.state.target_channel}
-                        request={this.props.request}
-                        user={this.props.user}
-                    />
+                    <div>
+                        <Paper>
+                            <TextField
+                                floatingLabelText='add existing member by email'
+                                onChange={(evt, value) => { this.setState({ email: value }); }}
+                            />
+                            <RaisedButton label='Add' onClick={this.handleAddMember.bind(this, this.state.email)} />
+
+                        </Paper>
+                        <Player
+                            channel={this.state.target_channel}
+                            request={this.props.request}
+                            user={this.props.user}
+                        />
+                    </div>
                 );
             }
         }

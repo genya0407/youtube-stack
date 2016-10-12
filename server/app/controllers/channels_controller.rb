@@ -1,6 +1,6 @@
 class ChannelsController < ApplicationController
   before_action :authenticate_user!, :set_user
-  before_action :set_channel, only: [:destroy, :update, :play, :go_next]
+  before_action :set_channel, only: [:destroy, :update, :play, :go_next, :invite]
 
   def index
     render json: @user.channels
@@ -28,6 +28,21 @@ class ChannelsController < ApplicationController
       render json: @channel
     else
       render json: @channel.errors, status: :unprocessable_entity
+    end
+  end
+
+  def invite
+    user = User.find_by(email: params[:email])
+    if user.present?
+      user_channel = UserChannel.new(channel: @channel, user: user)
+      if user_channel.save
+        render json: user_channel
+      else
+        render json: user_channel.errors, status: :unprocessable_entity
+      end
+    else
+      render json: { errors: ["No such user '#{params[:email]}'."] },
+             status: :not_found
     end
   end
 
