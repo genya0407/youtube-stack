@@ -1,0 +1,12 @@
+version: '2'
+services:
+    rails:
+        build: ./server
+        volumes:
+            - ./server:/var/www/API
+            - database:/var/db
+        ports:
+            - '8080:8080'
+volumes:
+    database:
+        driver: local
