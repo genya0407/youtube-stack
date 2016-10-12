@@ -4,11 +4,11 @@ import RaisedButton from 'material-ui/RaisedButton';
 import TextField from 'material-ui/TextField';
 import Paper from 'material-ui/Paper';
 import axios from 'axios';
+import { apiBaseUrl } from '../../config/environments'
 
 import Login from './Login';
 import Channels from './Channels'
 
-const apiBaseUrl = 'http://localhost:8080';
 const signInUrl = '/auth/sign_in';
 const signUpUrl = '/auth';
 const request = axios.create({ baseURL: apiBaseUrl });
