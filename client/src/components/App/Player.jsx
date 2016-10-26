@@ -39,11 +39,17 @@ export default class Player extends Component {
         }
         this.props.request.get(`/channels/${channel_id}/videos/playing`)
                           .then((response) => {
-                               this.setState({ playing_video: response.data });
-                               if (this.state.playing_video === null) {
-                                   this.goNextVideo();
+                               if (response.data === null) {
+                                 this.goRelatedVideo();
                                }
                           })
+    }
+
+    goRelatedVideo() {
+      this.props.request.get("https://www.googleapis.com/youtube/v3/search", {part: 'id', relatedToVideoId: this.state.playing_video, type: 'video', key: apiKey})
+                        .then((response) => {
+                          this.setState({playing_video: response.data.items[0].id.videoId});
+                        });
     }
 
     addVideo(video_id, title, thumbnail_url) {
