@@ -107,6 +107,7 @@ export default class Player extends Component {
                         videoId={this.state.playing_video !== null && this.state.playing_video.video_id}
                         onReady={(evt) => { this.setState({ player: evt.target }) }}
                         onPlay={(evt) => { this.handleOnPlay(evt); }}
+                        onError={this.goNextVideo.bind(this)}
                         onEnd={this.goNextVideo.bind(this)}
                         opts={{ playerVars: { autoplay: 1 } }}
                     />
